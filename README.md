@@ -7,7 +7,7 @@
 
 GOES data was captured using the sunpy_5 library, using the sunkit_instruments.goes_xrs function. Explosion data was captured from class A1. In this database, data from May 1, 2010 to February 31, 2023 were used.
 The SHARP data were obtained through a URL provided by JSOC, which allowed the download of the hmi.sharp_720s database, allowing us to choose the time period and parameters. The SHARP data were selected from the list of solar flares obtained by GOES.
-This script was created from the script by Jacob Conrad Trinidad (https://stacks.stanford.edu/file/druid:yv269xg0995/Predicting%20Solar%20Flares%20using%20SVMs.html), realizado a partir do trabalho de Bobra e Couvidat (2015) 
+This script was created from the script by Jacob Conrad Trinidad (https://stacks.stanford.edu/file/druid:yv269xg0995/Predicting%20Solar%20Flares%20using%20SVMs.html), carried out from the work of Bobra and Couvidat (2015) 
 
 (https://doi.org/10.1088/0004-637X/798/2/135). 
 
