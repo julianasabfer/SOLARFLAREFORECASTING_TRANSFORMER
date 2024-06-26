@@ -46,7 +46,8 @@ Use
 |---------|-----------|
 |separator| character that separates the columns of the CSV file (; , ) |
 |url_data     | patch of the .csv file with the data|
-|list_col_delete| List of fields that must be excluded from the original set.<br><br>lista_col_delete  = ['DATE','DATE_S','DATE_B','DATE__OBS',<br>'DATE-OBS','T_OBS','T_REC_formatado','Class_2',<br>'class_flare','Ano']<br><br>Exclusion of parameters according to the study by Bobra and Couvidat (2015)<br><br>10_parameters = ['DATE','DATE_S','DATE_B','DATE__OBS',<br>'DATE-OBS','T_OBS','T_REC_formatado','Class_2',<br>'class_flare','Ano','MEANGAM','MEANGBT',<br>'MEANGBZ','MEANSHR','MEANGBH','MEANJZH',<br>'MEANJZD','MEANALP']
+|list_col_delete| List of fields that must be excluded from the original set.<br><br>list_col_delete = ['DATE','DATE_S','DATE_B','DATE__OBS','DATE-OBS','T_OBS','OBS_VR', 'QUALITY', 'Class_Flare']<br><br>Exclusion of parameters according to the study by Bobra and Couvidat (2015)<br><br>10_parameters = ['DATE','DATE_S','DATE_B','DATE__OBS','DATE-OBS','T_OBS','OBS_VR', 'QUALITY', 'Class_Flare', 'MEANGAM','MEANGBT','MEANGBZ','MEANSHR','MEANGBH','MEANJZH', 'MEANJZD','MEANALP'] 
+
 |date_chronological | Date ranges of training, validation, and test sets. <br><br>Entire database:<br><br>No division by date (random)<br><br>date_chronological_empty = []<br><br>Division by date<br><br>date_chronological = [train_start_date, train_end_date, <br>validate_start_date, validate_end_date, test_start_date, <br> test_end_date] <br><br> Partial database - high and low of the solar cycle. Preceded by the phase of the solar cycle (A1, A2, A3, A4) <br><br> date_chronological_A1 = [train_start_date_1,<br> train_end_date_1, train_start_date_2, <br>train_end_date_2, validate_start_date, validate_end_date,<br> test_start_date, test_end_dade]|
 |set_dataset_base|Indicates in the results file the base used. Default value "all_abcmx". |
 |set_window|Indicates the prediction window in the results file. Standard value, based on the base used: 24h |
@@ -76,7 +77,7 @@ url_data = 'data/sharp_abcmx-nf-all_6h_2010-01-01_2024-04-30.csv'
 #list_col_delete = ['DATE','DATE_S','DATE_B','DATE__OBS','DATE-OBS','T_OBS','OBS_VR', 'QUALITY', 'Class_Flare']
 
 #Attributes' redution 
-list_col_delete = ['DATE','DATE_S','DATE_B','DATE__OBS','DATE-OBS','T_OBS','T_REC_formatado','Class_2','class_flare','Ano','MEANGAM','MEANGBT','MEANGBZ','MEANSHR','MEANGBH','MEANJZH', 'MEANJZD','MEANALP'] 
+list_col_delete = ['DATE','DATE_S','DATE_B','DATE__OBS','DATE-OBS','T_OBS','OBS_VR', 'QUALITY', 'Class_Flare', 'MEANGAM','MEANGBT','MEANGBZ','MEANSHR','MEANGBH','MEANJZH', 'MEANJZD','MEANALP'] 
 
 date_chronological_empty = []
 #date_chronological = ["2010-01-01 00:00:00", "2014-10-26 23:59:00", "2014-10-27 00:00:00", "2015-10-30 23:59:00", "2015-10-31 00:00:00", "2023-12-31 23:59:00"]
