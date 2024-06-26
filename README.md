@@ -44,61 +44,42 @@ Use
 
 |Variables|Description|
 |---------|-----------|
-|results_file  | file path that will store the results of the model run|
-|data_file     | patch of the .csv file with the data|
-|separator_file| character that separates the columns of the CSV file (; , ) |
-|set_balancing | Indicates the model, balancing, division of sets and weights<br><br> set_balancing = [model, balancing, data_division, weight]<br><br> model = mlp, svm, lstm, transformers<br> balancing = original, undersampling, oversampling, smote<br> data_division = data, random<br> weight = True, False |
-|list_col_delete| List of fields that must be excluded from the original set.<br><br>lista_col_delete  = ['DATE','DATE_S','DATE_B','DATE__OBS',<br>'DATE-OBS','T_OBS','T_REC_formatado','Class_2',<br>'class_flare','Ano']<br><br>Exclusion of parameters according to the study by Bobra and Couvidat (2015)<br><br>10_parameters = ['DATE','DATE_S','DATE_B','DATE__OBS',<br>'DATE-OBS','T_OBS','T_REC_formatado','Class_2',<br>'class_flare','Ano','MEANGAM','MEANGBT',<br>'MEANGBZ','MEANSHR','MEANGBH','MEANJZH',<br>'MEANJZD','MEANALP']<br><br>all_parameters_sharp =['DATE','DATE_S','DATE_B','DATE__OBS',<br>'DATE-OBS','T_OBS','T_REC_formatado',<br>'Class_2','class_flare','Ano','TOTUSJH',<br>'TOTPOT','TOTUSJZ','ABSNJZH','SAVNCPP',<br>'USFLUX','AREA_ACR','MEANPOT','R_VALUE',<br>'SHRGT45','MEANGAM','MEANGBT','MEANGBZ',<br>'MEANSHR','MEANGBH','MEANJZH','MEANJZD','MEANALP'] |
-|date_chronological |Date ranges of training, validation, and test sets. <br><br>Entire database:<br><br>date_chronological = [train_start_date, train_end_date, <br>validate_start_date, validate_end_date, test_start_date, <br> test_end_date] <br><br>Partial database - high and low of the solar cycle <br><br> date_chronological = [train_start_date_1,<br> train_end_date_1, train_start_date_2, <br>train_end_date_2, validate_start_date, validate_end_date,<br> test_start_date, test_end_dade]|
+|separator| character that separates the columns of the CSV file (; , ) |
+|url_data     | patch of the .csv file with the data|
+|list_col_delete| List of fields that must be excluded from the original set.<br><br>lista_col_delete  = ['DATE','DATE_S','DATE_B','DATE__OBS',<br>'DATE-OBS','T_OBS','T_REC_formatado','Class_2',<br>'class_flare','Ano']<br><br>Exclusion of parameters according to the study by Bobra and Couvidat (2015)<br><br>10_parameters = ['DATE','DATE_S','DATE_B','DATE__OBS',<br>'DATE-OBS','T_OBS','T_REC_formatado','Class_2',<br>'class_flare','Ano','MEANGAM','MEANGBT',<br>'MEANGBZ','MEANSHR','MEANGBH','MEANJZH',<br>'MEANJZD','MEANALP']
+|date_chronological | Date ranges of training, validation, and test sets. <br><br>Entire database:<br><br>No division by date (random)<br><br>date_chronological_empty = []<br><br>Division by date<br><br>date_chronological = [train_start_date, train_end_date, <br>validate_start_date, validate_end_date, test_start_date, <br> test_end_date] <br><br> Partial database - high and low of the solar cycle. Preceded by the phase of the solar cycle (A1, A2, A3, A4) <br><br> date_chronological_A1 = [train_start_date_1,<br> train_end_date_1, train_start_date_2, <br>train_end_date_2, validate_start_date, validate_end_date,<br> test_start_date, test_end_dade]|
+|set_dataset_base|Indicates in the results file the base used. Default value "all_abcmx". |
+|set_window|Indicates the prediction window in the results file. Standard value, based on the base used: 24h |
+|set_epoch|Indicates the number of epochs used in training. |
+|set_batch|Indicates the Batch size. |
+|set_model_name|Array with the models that will be trained. All models or just some of them can be used. <br><br>Default value: ['mlp', 'svm', 'lstm', 'transformers']. |
+|set_dataset_base|Array with the divisions of the dataset. One or all of them can be used. <br><br>Default value: ['all', 'A1', 'A2', 'A3', 'A4'] |
+|set_balancing| Array with the balances used in training. One or all of them can be used. The model will be run once for each one. <br><br>Default Value: ['weight', 'undersampling', 'oversampling', 'smote']|
+
+
+
+
+
+
+
+
+
 
 ## Example
 
 ``` python
-#set variables
-results_file = 'dados/results.csv'
-data_file = "data/2010-2023-03-abcmx.csv"
-separator_file = ";"
-date_chronological = []
+#path dataset
+separator = ','
+url_data = 'data/sharp_abcmx-nf-all_6h_2010-01-01_2024-04-30.csv'
 
-set_balancing = [ ['mlp','smote','data','True'], ['svm','smote','data','True'], ['lstm','smote','data','True'],['transformers','smote','data','True']]
+#Coluns Delete in CSV file
+#list_col_delete = ['DATE','DATE_S','DATE_B','DATE__OBS','DATE-OBS','T_OBS','OBS_VR', 'QUALITY', 'Class_Flare']
 
-list_col_delete = ['DATE','DATE_S','DATE_B','DATE__OBS','DATE-OBS','T_OBS','T_REC_formatado','Class_2','class_flare','Ano']
+#Attributes' redution 
+list_col_delete = ['DATE','DATE_S','DATE_B','DATE__OBS','DATE-OBS','T_OBS','T_REC_formatado','Class_2','class_flare','Ano','MEANGAM','MEANGBT','MEANGBZ','MEANSHR','MEANGBH','MEANJZH', 'MEANJZD','MEANALP'] 
 
-date_chronological = ["2010-05-03 00:00:00", "2014-10-26 00:12:00", "2014-10-26 00:24:00", "2015-09-26 10:00:00", "2015-09-26 11:00:00", "2023-02-15 15:24:00"]
-
-
-with open(results_file, 'w') as csvfile:
-    #write head
-    csv.writer(csvfile, delimiter=';').writerow(['Model','Balancing','DivisionSets','Weights','TP', 'FP', 'TN', 'FN', 'ACC', 'PRE', 'Recall', 'HSS', 'TSS', 'AUC', 'ROC', 'FAR', 'LOSS'])
- 
-    #write results
-    for i in range(4):
-        csv.writer(csvfile, delimiter=';').writerow(train_models(set_balancing[i][0], set_balancing[i][1], set_balancing[i][2], set_balancing[i][3],list_col_delete,date_chronological, separator_file))
-
-
-```
-### 
-Others variable configuration
-
-``` python
-
-##################################### models, balancing, set division ##################################################################################
-
-
-set_original = [ ['mlp','original','data','False'], ['svm','original','data','False'], ['lstm','original','data','False'],['transformers','original','data','False']]
-
-set_original_2 = [ ['mlp','original','data','True'], ['svm','original','data','True'], ['lstm','original','data','True'],['transformers','original','data','True']]
-
-set_undersampling = [ ['mlp','undersampling','data','True'], ['svm','undersampling','data','True'], ['lstm','undersampling','data','True'],['transformers','undersampling','data','True']]
-
-set_oversampling = [ ['mlp','oversampling','data','True'], ['svm','oversampling','data','True'], ['lstm','oversampling','data','True'],['transformers','oversampling','data','True']]
-
-set_smote = [ ['mlp','smote','data','True'], ['svm','smote','data','True'], ['lstm','smote','data','True'],['transformers','smote','data','True']]
-
-##################################### sets ##################################################################################################################
-
-#all dataset
-date_chronological_all = ["2010-05-03 00:00:00", "2014-10-26 00:12:00", "2014-10-26 00:24:00", "2015-09-26 10:00:00", "2015-09-26 11:00:00", "2023-02-15 15:24:00"]
+date_chronological_empty = []
+#date_chronological = ["2010-01-01 00:00:00", "2014-10-26 23:59:00", "2014-10-27 00:00:00", "2015-10-30 23:59:00", "2015-10-31 00:00:00", "2023-12-31 23:59:00"]
 
 #date A1 - 2010-2011
 date_chronological_A1 = ["2010-05-03 00:00:00", "2010-10-31 23:59:59", "2011-06-01 00:00:00", "2011-12-31 23:59:59", "2010-11-01 00:00:00", "2011-01-31 23:59:59", "2011-02-21 00:00:00", "2011-05-31 23:59:59"]
@@ -112,16 +93,18 @@ date_chronological_A3 = ["2014-09-01 00:00:00", "2015-03-31 23:59:59", "2015-10-
 #date A4 - 2016-2018
 date_chronological_A4 = ["2016-07-01 00:00:00", "2017-02-28 23:59:59", "2017-09-01 00:00:00", "2018-07-31 23:59:59", "2017-03-01 00:00:00", "2017-05-31 23:59:59", "2017-06-01 00:00:00", "2017-08-31 23:59:59"]
 
-    
-##################################### SHARP parameters ##################################################################################
+#set parameters before training
+set_dataset_base = "all-abcmx"
+set_window = "24h"
+set_epoch  = 10
+set_batch = 64
+set_model_name = ['transformers'] # ['mlp', 'svm','lstm','transformers']
+set_dataset_base = ['A1'] #['all', 'A1', 'A2', 'A3', 'A4']
+set_balancing = ['weight', 'oversampling'] # ['weight', 'undersampling', 'oversampling', 'smote']
 
-all_sharp_parameters =['DATE','DATE_S','DATE_B','DATE__OBS','DATE-OBS','T_OBS','T_REC_formatado','Class_2','class_flare','Ano','TOTUSJH','TOTPOT','TOTUSJZ','ABSNJZH','SAVNCPP','USFLUX','AREA_ACR','MEANPOT','R_VALUE','SHRGT45','MEANGAM','MEANGBT','MEANGBZ','MEANSHR','MEANGBH','MEANJZH','MEANJZD','MEANALP']
-
-18_sharp_parameters = ['DATE','DATE_S','DATE_B','DATE__OBS','DATE-OBS','T_OBS','T_REC_formatado','Class_2','class_flare','Ano']
-
-10_sharp_parameters = ['DATE','DATE_S','DATE_B','DATE__OBS','DATE-OBS','T_OBS','T_REC_formatado','Class_2','class_flare','Ano','MEANGAM','MEANGBT','MEANGBZ','MEANSHR','MEANGBH','MEANJZH','MEANJZD','MEANALP']
 
 ```
+
 
 ## Data Collection
 
@@ -135,13 +118,6 @@ http://jsoc.stanford.edu/doc/data/hmi/harpnum_to_noaa/all_harps_with_noaa_ars.tx
 
 ### Set Variables
 
-**required_times**
-
-Set the time range to capture date
-
-_Ex:_
-required_times = [dt.timedelta(hours=i) for i in [6,12,18,24,30,36,42,48]]
-
 **start_date** <br>
 **end_date**
 
@@ -152,21 +128,12 @@ _Ex:_
 start_date = '2010-05-01'
 end_date = '2023-03-31'’
 
-### Example
+### Alter forecast window 
 
-``` python
-required_times = [dt.timedelta(hours=i) for i in [6,12,18,24,30,36,42,48]] 
-start_date = '2018-05-14' #2010-05-01
-end_date = '2018-05-15'   #2023-03-31
+date_event = event['peak_time'].to_datetime() - dt.timedelta(hours=24)
 
-# collect data if it does not exist yet
-if os.path.isfile('data/pos_class.npy'):
-    pos_class = np.load('data/pos_class.npy', allow_pickle=True, encoding='latin1')
-else:
-    goes_event, num_mapper = capture_goes(start_date,end_date)
-    pos_class = get_class_events(start_date, end_date, required_times, goes_event, num_mapper)
-    np.save("data/pos_class", pos_class)
-```
+
+
 
 
 
